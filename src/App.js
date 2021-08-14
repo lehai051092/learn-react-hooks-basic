@@ -1,8 +1,9 @@
 import './App.scss';
 import ColorBox from "./components/ColorBox";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import TodoList from "./components/TodoList";
 import TodoForm from "./components/TodoForm";
+import PostList from "./components/PostList";
 
 function App() {
     const [todoList, setTodoList] = useState(
@@ -12,6 +13,24 @@ function App() {
             {id: 3, title: 'They love Easy Frontend! 🚀 '},
         ]
     );
+
+    const [postList, setPostList] = useState([]);
+
+    useEffect(() => {
+        async function fetchPostList() {
+            try {
+                const requestUrl = 'https://js-post-api.herokuapp.com/api/posts?_limit=10&_page=1';
+                const response = await fetch(requestUrl);
+                const responseJSON = await response.json();
+                const {data} = responseJSON;
+                setPostList(data);
+            } catch (e) {
+                console.log(e.message);
+            }
+        }
+
+        fetchPostList();
+    }, []);
 
     const handleTodoClick = (todo) => {
         const index = todoList.findIndex(x => x.id === todo.id);
@@ -43,6 +62,9 @@ function App() {
             <hr/>
             <h2>Todo Form</h2>
             <TodoForm onSubmit={handleTodoFormSubmit}/>
+            <hr/>
+            <h2>Post List</h2>
+            <PostList postList={postList}/>
         </div>
     );
 }
