@@ -8,6 +8,7 @@ import Pagination from "./components/Pagination";
 import queryString from 'query-string';
 import PostFiltersForm from "./components/PostFiltersForm";
 import Clock from "./components/Clock";
+import BetterClock from "./components/BetterClock";
 
 function App() {
     const [todoList, setTodoList] = useState(
@@ -105,6 +106,7 @@ function App() {
             <hr/>
             <h2>Clock</h2>
             <Clock/>
+            <BetterClock/>
         </div>
     );
 }
