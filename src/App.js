@@ -6,6 +6,7 @@ import TodoForm from "./components/TodoForm";
 import PostList from "./components/PostList";
 import Pagination from "./components/Pagination";
 import queryString from 'query-string';
+import PostFiltersForm from "./components/PostFiltersForm";
 
 function App() {
     const [todoList, setTodoList] = useState(
@@ -26,7 +27,8 @@ function App() {
     );
     const [filters, setFilters] = useState({
         _limit: 10,
-        _page: 1
+        _page: 1,
+        title_like: ''
     });
 
     useEffect(() => {
@@ -43,6 +45,7 @@ function App() {
                 console.log(e.message);
             }
         }
+
         fetchPostList();
     }, [filters]);
 
@@ -65,11 +68,20 @@ function App() {
     }
 
     const handlePageChane = (newPage) => {
-        console.log(newPage);
         setFilters({
             ...filters,
             _page: newPage
         });
+    }
+
+    const handleFiltersChange = (newFilters) => {
+        setFilters(
+            {
+                ...filters,
+                _page: 1,
+                title_like: newFilters.searchTerm
+            }
+        )
     }
 
     return (
@@ -86,6 +98,7 @@ function App() {
             <TodoForm onSubmit={handleTodoFormSubmit}/>
             <hr/>
             <h2>Post List</h2>
+            <PostFiltersForm onSubmit={handleFiltersChange}/>
             <PostList postList={postList}/>
             <Pagination pagination={pagination} onPageChange={handlePageChane}/>
         </div>
